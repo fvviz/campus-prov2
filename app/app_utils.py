@@ -6,7 +6,7 @@ import cv2
 import os
 
 
-def scan_for_user(img_file_name, footage):
+def scan_for_user(img_file_name, footage, framecheck):
         filename=os.path.basename(footage)
         cap = cv2.VideoCapture(footage)
         cap.set(3, 640)
@@ -19,7 +19,7 @@ def scan_for_user(img_file_name, footage):
                 frameno+=1
                 
                 cv2.imwrite('cctvimg.jpg',frame)
-                if frameno%5==0:
+                if frameno%7==0:
                                 print("frame check, count_check=", count)
                                 try:
                                         print("checking, count=", count)
@@ -36,10 +36,10 @@ def scan_for_user(img_file_name, footage):
                                                 thickness = 2
                                                 name = os.path.basename(img_file_name).split(".")[0]
                                                 cv2.putText(frame, name, org, font, fontScale, color, thickness)
-                                                cv2.imwrite(f"detections/{name}.jpg", frame)
+                                                cv2.imwrite(f"detections/{name}{frameno}.jpg", frame)
                                                 print("wrote him in ")
                                         
-                                        if count==3:
+                                        if count==framecheck:
                                                 print("count is 3")
                                                 name = img_file_name.split(".")[0]
                                                 return filename
